@@ -8,13 +8,13 @@ import (
 
 type HostLocation struct {
 	City         string  `json:"city"`
-	RegionCode   int     `json:"region_code"`
+	RegionCode   string  `json:"region_code"`
 	AreaCode     int     `json:"area_code"`
 	Longitude    float32 `json:"longitude"`
 	CountryCode3 string  `json:"country_code3"`
 	CountryName  string  `json:"country_name"`
 	DMACode      int     `json:"dma_code"`
-	CountryCode  int     `json:"country_code"`
+	CountryCode  string  `json:"country_code"`
 	Latitude     float32 `json:"latitude"`
 }
 
