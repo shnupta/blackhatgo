@@ -8,13 +8,13 @@ import (
 
 type HostLocation struct {
 	City         string  `json:"city"`
-	RegionCode   int     `json:"region_code"`
+	RegionCode   string  `json:"region_code"`
 	AreaCode     int     `json:"area_code"`
 	Longitude    float32 `json:"longitude"`
 	CountryCode3 string  `json:"country_code3"`
 	CountryName  string  `json:"country_name"`
 	DMACode      int     `json:"dma_code"`
-	CountryCode  int     `json:"country_code"`
+	CountryCode  string  `json:"country_code"`
 	Latitude     float32 `json:"latitude"`
 }
 
@@ -28,9 +28,9 @@ type Host struct {
 	IP        int64        `json:"ip"`
 	Domains   []string     `json:"domains"`
 	Org       string       `json:"org"`
-	Data      string       `json:"data"`
-	Port      int          `json:"port"`
-	IPString  string       `json:"ip_str"`
+	//Data      string       `json:"data"`
+	Port     int    `json:"port"`
+	IPString string `json:"ip_str"`
 }
 
 type HostSearch struct {
@@ -45,6 +45,20 @@ func (c *Client) HostSearch(q string) (*HostSearch, error) {
 	defer res.Body.Close()
 
 	var ret HostSearch
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
+		return nil, err
+	}
+	return &ret, nil
+}
+
+func (c *Client) HostIP(ip string) (*Host, error) {
+	res, err := http.Get(fmt.Sprintf("%s/shodan/host/%s?key=%s", BaseURL, ip, c.apiKey))
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	var ret Host
 	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
